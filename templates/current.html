@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>City Weather</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='current.css') }}">
+    <style>
+        body {
+            background-image: url("{{ background_image }}");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        .city-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 10px;
+        }
+
+        .weather-box {
+
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+        }
+
+        .weather-box img {
+            width: 100px;
+            height: 100px;
+        }
+
+        .other-cities {
+            margin-top: 20px;
+        }
+
+        .city-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .city-item {
+            background: #ffffff;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 200px;
+            text-align: center;
+        }
+
+        .city-item img {
+            width: 80px;
+            height: 80px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="city-container">
+        <!-- Display detailed weather for the selected city -->
+        <div class="weather-box">
+            <h1>{{ current_weather.cityName }}</h1>
+            <img src="{{ current_weather.icon }}" alt="Weather Icon">
+            <h2>Temperature: {{ current_weather.Temp }}°C</h2>
+            <p>Condition: {{ current_weather.condition }}</p>
+            <p>Humidity: {{ current_weather.humidity }}%</p>
+            <p>Wind Speed: {{ current_weather.windspeed }} mph</p>
+        </div>
+
+        <!-- Display weather for other cities -->
+        <!-- our city could be a bit diffrently here  -->
+        <div class="other-cities">
+            <h2>Other Cities</h2>
+            <div class="city-grid">
+                {% for city, data in other_weather_data.items() %}
+                <a href="{{ url_for('current', result=city) }}">
+                    <div class="city-item">
+                        <h3>{{ city }}</h3>
+                        <img src="{{ data.icon }}" alt="Weather Icon">
+                        <p>{{ data.Temp }}°C, {{ data.condition }}</p>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
